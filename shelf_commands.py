@@ -50,7 +50,7 @@ class ShelfViewCommand(sublime_plugin.WindowCommand):
 class ShelfAddCommand(sublime_plugin.WindowCommand):
     def run(self, shelf):
         if shelf != 'project' and shelf != 'common':
-            raise TypeError(f'Unknown <{shelf}> shelf')
+            raise TypeError('Unknown <' + shelf + '> shelf')
         shelf = CommonShelf() if shelf == 'common' else ProjectShelf()
 
         item = self.window.active_view().file_name()
@@ -63,7 +63,7 @@ class ShelfItemMoveUpCommand(sublime_plugin.WindowCommand):
         item = tuple(item)
 
         if shelf != 'project' and shelf != 'common':
-            raise TypeError(f'Unknown <{shelf}> shelf')
+            raise TypeError('Unknown <' + shelf + '> shelf')
 
         shelf = CommonShelf() if shelf == 'common' else ProjectShelf()
         shelf.move_up(item)
@@ -79,7 +79,7 @@ class ShelfItemMoveDownCommand(sublime_plugin.WindowCommand):
         item = tuple(item)
 
         if shelf != 'project' and shelf != 'common':
-            raise TypeError(f'Unknown <{shelf}> shelf')
+            raise TypeError('Unknown <' + shelf + '> shelf')
 
         shelf = CommonShelf() if shelf == 'common' else ProjectShelf()
         shelf.move_down(item)
@@ -95,7 +95,7 @@ class ShelfItemRemoveCommand(sublime_plugin.WindowCommand):
         item = tuple(item)
 
         if shelf != 'project' and shelf != 'common':
-            raise TypeError(f'Unknown <{shelf}> shelf')
+            raise TypeError('Unknown <' + shelf + '> shelf')
 
         shelf = CommonShelf() if shelf == 'common' else ProjectShelf()
         shelf.remove(item)
