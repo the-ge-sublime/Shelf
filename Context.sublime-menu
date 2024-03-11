@@ -1,0 +1,23 @@
+[
+  {"caption": "-"},
+  {
+    "id": "shelf",
+    "caption": "Shelf",
+    "children": [
+      {
+        "caption": "Add this to the project shelf",
+        "command": "shelf_add",
+        "args": {"shelf": "project"}
+      },
+      {
+        "caption": "Add this to the common shelf",
+        "command": "shelf_add",
+        "args": {"shelf": "common"}
+      },
+      {
+        "caption": "View contents",
+        "command": "shelf_view"
+      }
+    ]
+  }
+]

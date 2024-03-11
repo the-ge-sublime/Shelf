@@ -1,0 +1,167 @@
+<body id="shelf-popup">
+    <!-- previewable with the MiniHTMLPreview plugin (https://github.com/ehuss/Sublime-minihtml-Preview/) -->
+    <style>
+        html {
+          --row-height: 5rem;
+          --line-height: 1rem;
+          --font: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+          --font-mono: "sf mono", "Liberation Mono", Menlo, Courier, monospace;
+          --font-size: 1rem;
+          --content-padding: 0.5rem;
+          --bg-body: color(var(--background) blend(var(--foreground) 86%));
+          --bg-even: var(--background);
+          --bg-odd: color(var(--background) blend(var(--foreground) 92%));
+          --border: 1px solid color(var(--foreground) blend(var(--background) 20%));
+        }
+
+        body {
+          padding: var(--content-padding);
+          font-size: var(--font-size);
+          background-color: var(--bg-body);
+          border: var(--border);
+          width: 34rem;
+        }
+
+        .btn {
+          display: inline-block;
+          text-decoration: none;
+          font-family: var(--font);
+          color: var(--foreground);
+          border: var(--border);
+          border-radius: 5px;
+        }
+
+        .btn-error {
+          background-color: var(--btn-redish);
+        }
+
+        .close {
+          padding: 0 1px 2rem 0;
+          text-align: right;
+        }
+
+        .close-btn {
+          display: inline-block;
+          background-color: color(var(--background) blend(var(--redish) 50%));
+        }
+
+        .close-btn,
+        .close-btn .btn-icon {
+          width: 28px;
+          height: 28px;
+        }
+
+        .header {
+          margin: 0 0 0 0;
+          padding: 1rem .25rem 1rem .25rem;
+          font-weight: normal;
+        }
+
+        .table {
+          margin: 0 0 2rem 0;
+        }
+
+        .tr {
+          height: 3.75rem;
+        }
+
+        .tr-even {
+          background-color: var(--bg-even);
+        }
+
+        .tr-odd {
+          background-color: var(--bg-odd);
+        }
+
+        .td {
+          display: inline-block;
+        }
+
+        .main {
+          padding: 0 0 0 .625rem;
+          font-weight: normal;
+          font-size: 1.1rem;
+        }
+
+        .text-btn {
+          position: relative;
+          top: -.625rem;
+          padding: .3333333333rem 0 .3333333333rem .5rem;
+        }
+
+        .aside {
+          width: 13rem;
+          padding: .625rem .725rem 0 0;
+          text-align: right;
+        }
+
+        .action-btn {
+          width: 2.25rem;
+          margin: 0 .625rem 0 0;
+        }
+
+        .btn-icon {
+          width: 2.25rem;
+          height: 2.25rem;
+        }
+
+        .main {
+          width: 19rem;
+        }
+    </style>
+    <div class="close">
+        <a href="#" class="close-btn btn"><img class="btn-icon" src="res://Packages/Shelf/assets/img/close-dark.png"></a>
+    </div>
+    <h3 class="header">
+        <span>PROJECT</span>
+    </h3>
+    <div class="table">
+        <div class="tr tr-even tbody">
+            <h4 class="td main"><a href="subl:open_file {&quot;file&quot;:&quot;.config/sublime-text/Packages/Shelf/core/shelf.py&quot;,&quot;content&quot;:&quot;Could not open .config/sublime-text/Packages/Shelf/core/shelf.py&quot;}" class="btn text-btn" title="Open .config/sublime-text/Packages/Shelf/core/shelf.py">shelf.py</a></h4>
+            <div class="td aside"><a href="subl:open_dir {&quot;dir&quot;:&quot;.config/sublime-text/Packages/Shelf/core&quot;}" class="btn action-btn" title="Open containing folder"><img class="btn-icon" src="res://Packages/Shelf/assets/img/folder-dark.png"></a><a href="subl:shelf_item_move_up {&quot;item&quot;:[&quot;shelf.py&quot;,&quot;.config/sublime-text/Packages/Shelf/core/shelf.py&quot;],&quot;shelf&quot;:&quot;project&quot;}" class="btn action-btn" title="Move up"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-up-dark.png"></a><a href="subl:shelf_item_move_down {&quot;item&quot;:[&quot;shelf.py&quot;,&quot;.config/sublime-text/Packages/Shelf/core/shelf.py&quot;],&quot;shelf&quot;:&quot;project&quot;}" class="btn action-btn" title="Move down"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-down-dark.png"></a><a href="subl:shelf_item_remove {&quot;item&quot;:[&quot;shelf.py&quot;,&quot;.config/sublime-text/Packages/Shelf/core/shelf.py&quot;],&quot;shelf&quot;:&quot;project&quot;}" class="btn action-btn" title="Remove"><img class="btn-icon" src="res://Packages/Shelf/assets/img/trash-dark.png"></a></div>
+        </div>
+        <div class="tr tr-odd tbody">
+            <h4 class="td main"><a href="subl:open_file {&quot;file&quot;:&quot;.config/sublime-text/Packages/Shelf/core/renderer.py&quot;,&quot;content&quot;:&quot;Could not open .config/sublime-text/Packages/Shelf/core/renderer.py&quot;}" class="btn text-btn" title="Open .config/sublime-text/Packages/Shelf/core/renderer.py">renderer.py</a></h4>
+            <div class="td aside"><a href="subl:open_dir {&quot;dir&quot;:&quot;.config/sublime-text/Packages/Shelf/core&quot;}" class="btn action-btn" title="Open containing folder"><img class="btn-icon" src="res://Packages/Shelf/assets/img/folder-dark.png"></a><a href="subl:shelf_item_move_up {&quot;item&quot;:[&quot;renderer.py&quot;,&quot;.config/sublime-text/Packages/Shelf/core/renderer.py&quot;],&quot;shelf&quot;:&quot;project&quot;}" class="btn action-btn" title="Move up"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-up-dark.png"></a><a href="subl:shelf_item_move_down {&quot;item&quot;:[&quot;renderer.py&quot;,&quot;.config/sublime-text/Packages/Shelf/core/renderer.py&quot;],&quot;shelf&quot;:&quot;project&quot;}" class="btn action-btn" title="Move down"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-down-dark.png"></a><a href="subl:shelf_item_remove {&quot;item&quot;:[&quot;renderer.py&quot;,&quot;.config/sublime-text/Packages/Shelf/core/renderer.py&quot;],&quot;shelf&quot;:&quot;project&quot;}" class="btn action-btn" title="Remove"><img class="btn-icon" src="res://Packages/Shelf/assets/img/trash-dark.png"></a></div>
+        </div>
+        <div class="tr tr-even tbody">
+            <h4 class="td main"><a href="subl:open_file {&quot;file&quot;:&quot;.config/sublime-text/Packages/Shelf/preview.html&quot;,&quot;content&quot;:&quot;Could not open .config/sublime-text/Packages/Shelf/preview.html&quot;}" class="btn text-btn" title="Open .config/sublime-text/Packages/Shelf/preview.html">preview.html</a></h4>
+            <div class="td aside"><a href="subl:open_dir {&quot;dir&quot;:&quot;.config/sublime-text/Packages/Shelf&quot;}" class="btn action-btn" title="Open containing folder"><img class="btn-icon" src="res://Packages/Shelf/assets/img/folder-dark.png"></a><a href="subl:shelf_item_move_up {&quot;item&quot;:[&quot;preview.html&quot;,&quot;.config/sublime-text/Packages/Shelf/preview.html&quot;],&quot;shelf&quot;:&quot;project&quot;}" class="btn action-btn" title="Move up"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-up-dark.png"></a><a href="subl:shelf_item_move_down {&quot;item&quot;:[&quot;preview.html&quot;,&quot;.config/sublime-text/Packages/Shelf/preview.html&quot;],&quot;shelf&quot;:&quot;project&quot;}" class="btn action-btn" title="Move down"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-down-dark.png"></a><a href="subl:shelf_item_remove {&quot;item&quot;:[&quot;preview.html&quot;,&quot;.config/sublime-text/Packages/Shelf/preview.html&quot;],&quot;shelf&quot;:&quot;project&quot;}" class="btn action-btn" title="Remove"><img class="btn-icon" src="res://Packages/Shelf/assets/img/trash-dark.png"></a></div>
+        </div>
+    </div>
+    <h3 class="header">COMMON</h3>
+    <div class="table">
+        <div class="tr tr-even tbody">
+            <h4 class="td main"><a href="subl:open_file {&quot;file&quot;:&quot;domains.csv&quot;,&quot;content&quot;:&quot;Could not open domains.csv&quot;}" class="btn text-btn" title="Open domains.csv">domains.csv</a></h4>
+            <div class="td aside"><a href="subl:open_dir {&quot;dir&quot;:&quot;/media/dev/var&quot;}" class="btn action-btn" title="Open containing folder"><img class="btn-icon" src="res://Packages/Shelf/assets/img/folder-dark.png"></a><a href="subl:shelf_item_move_up {&quot;item&quot;:[&quot;domains.csv&quot;,&quot;domains.csv&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move up"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-up-dark.png"></a><a href="subl:shelf_item_move_down {&quot;item&quot;:[&quot;domains.csv&quot;,&quot;domains.csv&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move down"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-down-dark.png"></a><a href="subl:shelf_item_remove {&quot;item&quot;:[&quot;domains.csv&quot;,&quot;domains.csv&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Remove"><img class="btn-icon" src="res://Packages/Shelf/assets/img/trash-dark.png"></a></div>
+        </div>
+        <div class="tr tr-odd tbody">
+            <h4 class="td main"><a href="subl:open_file {&quot;file&quot;:&quot;/etc/hosts&quot;,&quot;content&quot;:&quot;Could not open /etc/hosts&quot;}" class="btn text-btn" title="Open /etc/hosts">hosts</a></h4>
+            <div class="td aside"><a href="subl:open_dir {&quot;dir&quot;:&quot;/etc&quot;}" class="btn action-btn" title="Open containing folder"><img class="btn-icon" src="res://Packages/Shelf/assets/img/folder-dark.png"></a><a href="subl:shelf_item_move_up {&quot;item&quot;:[&quot;hosts&quot;,&quot;/etc/hosts&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move up"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-up-dark.png"></a><a href="subl:shelf_item_move_down {&quot;item&quot;:[&quot;hosts&quot;,&quot;/etc/hosts&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move down"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-down-dark.png"></a><a href="subl:shelf_item_remove {&quot;item&quot;:[&quot;hosts&quot;,&quot;/etc/hosts&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Remove"><img class="btn-icon" src="res://Packages/Shelf/assets/img/trash-dark.png"></a></div>
+        </div>
+        <div class="tr tr-even tbody">
+            <h4 class="td main"><a href="subl:open_file {&quot;file&quot;:&quot;manage/system/🚨🚧⛏️🤘&quot;,&quot;content&quot;:&quot;Could not open manage/system/🚨🚧⛏️🤘&quot;}" class="btn text-btn" title="Open manage/system/🚨🚧⛏️🤘">🚨🚧⛏️🤘</a></h4>
+            <div class="td aside"><a href="subl:open_dir {&quot;dir&quot;:&quot;manage/system&quot;}" class="btn action-btn" title="Open containing folder"><img class="btn-icon" src="res://Packages/Shelf/assets/img/folder-dark.png"></a><a href="subl:shelf_item_move_up {&quot;item&quot;:[&quot;🚨🚧⛏️🤘&quot;,&quot;manage/system/🚨🚧⛏️🤘&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move up"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-up-dark.png"></a><a href="subl:shelf_item_move_down {&quot;item&quot;:[&quot;🚨🚧⛏️🤘&quot;,&quot;manage/system/🚨🚧⛏️🤘&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move down"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-down-dark.png"></a><a href="subl:shelf_item_remove {&quot;item&quot;:[&quot;🚨🚧⛏️🤘&quot;,&quot;manage/system/🚨🚧⛏️🤘&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Remove"><img class="btn-icon" src="res://Packages/Shelf/assets/img/trash-dark.png"></a></div>
+        </div>
+        <div class="tr tr-odd tbody">
+            <h4 class="td main"><a href="subl:open_file {&quot;file&quot;:&quot;tools/snippets/javascript/browser.js&quot;,&quot;content&quot;:&quot;Could not open tools/snippets/javascript/browser.js&quot;}" class="btn text-btn" title="Open tools/snippets/javascript/browser.js">browser.js</a></h4>
+            <div class="td aside"><a href="subl:open_dir {&quot;dir&quot;:&quot;tools/snippets/javascript&quot;}" class="btn action-btn" title="Open containing folder"><img class="btn-icon" src="res://Packages/Shelf/assets/img/folder-dark.png"></a><a href="subl:shelf_item_move_up {&quot;item&quot;:[&quot;browser.js&quot;,&quot;tools/snippets/javascript/browser.js&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move up"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-up-dark.png"></a><a href="subl:shelf_item_move_down {&quot;item&quot;:[&quot;browser.js&quot;,&quot;tools/snippets/javascript/browser.js&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move down"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-down-dark.png"></a><a href="subl:shelf_item_remove {&quot;item&quot;:[&quot;browser.js&quot;,&quot;tools/snippets/javascript/browser.js&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Remove"><img class="btn-icon" src="res://Packages/Shelf/assets/img/trash-dark.png"></a></div>
+        </div>
+        <div class="tr tr-even tbody">
+            <h4 class="td main"><a href="subl:open_file {&quot;file&quot;:&quot;tools/snippets/bash/strings.sh&quot;,&quot;content&quot;:&quot;Could not open tools/snippets/bash/strings.sh&quot;}" class="btn text-btn" title="Open tools/snippets/bash/strings.sh">strings.sh</a></h4>
+            <div class="td aside"><a href="subl:open_dir {&quot;dir&quot;:&quot;tools/snippets/bash&quot;}" class="btn action-btn" title="Open containing folder"><img class="btn-icon" src="res://Packages/Shelf/assets/img/folder-dark.png"></a><a href="subl:shelf_item_move_up {&quot;item&quot;:[&quot;strings.sh&quot;,&quot;tools/snippets/bash/strings.sh&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move up"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-up-dark.png"></a><a href="subl:shelf_item_move_down {&quot;item&quot;:[&quot;strings.sh&quot;,&quot;tools/snippets/bash/strings.sh&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move down"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-down-dark.png"></a><a href="subl:shelf_item_remove {&quot;item&quot;:[&quot;strings.sh&quot;,&quot;tools/snippets/bash/strings.sh&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Remove"><img class="btn-icon" src="res://Packages/Shelf/assets/img/trash-dark.png"></a></div>
+        </div>
+        <div class="tr tr-odd tbody">
+            <h4 class="td main"><a href="subl:open_file {&quot;file&quot;:&quot;tools/find.sh&quot;,&quot;content&quot;:&quot;Could not open tools/find.sh&quot;}" class="btn text-btn" title="Open tools/find.sh">find.sh</a></h4>
+            <div class="td aside"><a href="subl:open_dir {&quot;dir&quot;:&quot;tools&quot;}" class="btn action-btn" title="Open containing folder"><img class="btn-icon" src="res://Packages/Shelf/assets/img/folder-dark.png"></a><a href="subl:shelf_item_move_up {&quot;item&quot;:[&quot;find.sh&quot;,&quot;tools/find.sh&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move up"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-up-dark.png"></a><a href="subl:shelf_item_move_down {&quot;item&quot;:[&quot;find.sh&quot;,&quot;tools/find.sh&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move down"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-down-dark.png"></a><a href="subl:shelf_item_remove {&quot;item&quot;:[&quot;find.sh&quot;,&quot;tools/find.sh&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Remove"><img class="btn-icon" src="res://Packages/Shelf/assets/img/trash-dark.png"></a></div>
+        </div>
+        <div class="tr tr-even tbody">
+            <h4 class="td main"><a href="subl:open_file {&quot;file&quot;:&quot;arhiva/mail-forwarders&quot;,&quot;content&quot;:&quot;Could not open arhiva/mail-forwarders&quot;}" class="btn text-btn" title="Open arhiva/mail-forwarders">mail-forwarders</a></h4>
+            <div class="td aside"><a href="subl:open_dir {&quot;dir&quot;:&quot;arhiva&quot;}" class="btn action-btn" title="Open containing folder"><img class="btn-icon" src="res://Packages/Shelf/assets/img/folder-dark.png"></a><a href="subl:shelf_item_move_up {&quot;item&quot;:[&quot;mail-forwarders&quot;,&quot;arhiva/mail-forwarders&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move up"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-up-dark.png"></a><a href="subl:shelf_item_move_down {&quot;item&quot;:[&quot;mail-forwarders&quot;,&quot;arhiva/mail-forwarders&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move down"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-down-dark.png"></a><a href="subl:shelf_item_remove {&quot;item&quot;:[&quot;mail-forwarders&quot;,&quot;arhiva/mail-forwarders&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Remove"><img class="btn-icon" src="res://Packages/Shelf/assets/img/trash-dark.png"></a></div>
+        </div>
+        <div class="tr tr-odd tbody">
+            <h4 class="td main"><a href="subl:open_file {&quot;file&quot;:&quot;config/User/Grogrammer.sublime-color-scheme&quot;,&quot;content&quot;:&quot;Could not open config/User/Grogrammer.sublime-color-scheme&quot;}" class="btn text-btn" title="Open config/User/Grogrammer.sublime-color-scheme">Grogrammer.sublime-color-scheme</a></h4>
+            <div class="td aside"><a href="subl:open_dir {&quot;dir&quot;:&quot;config/User&quot;}" class="btn action-btn" title="Open containing folder"><img class="btn-icon" src="res://Packages/Shelf/assets/img/folder-dark.png"></a><a href="subl:shelf_item_move_up {&quot;item&quot;:[&quot;Grogrammer.sublime-color-scheme&quot;,&quot;config/User/Grogrammer.sublime-color-scheme&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move up"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-up-dark.png"></a><a href="subl:shelf_item_move_down {&quot;item&quot;:[&quot;Grogrammer.sublime-color-scheme&quot;,&quot;config/User/Grogrammer.sublime-color-scheme&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Move down"><img class="btn-icon" src="res://Packages/Shelf/assets/img/arrow-down-dark.png"></a><a href="subl:shelf_item_remove {&quot;item&quot;:[&quot;Grogrammer.sublime-color-scheme&quot;,&quot;config/User/Grogrammer.sublime-color-scheme&quot;],&quot;shelf&quot;:&quot;common&quot;}" class="btn action-btn" title="Remove"><img class="btn-icon" src="res://Packages/Shelf/assets/img/trash-dark.png"></a></div>
+        </div>
+    </div>
+</body>

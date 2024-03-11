@@ -1,0 +1,103 @@
+html {
+  --row-height: 5rem;
+  --line-height: 1rem;
+  --font: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-mono: "sf mono", "Liberation Mono", Menlo, Courier, monospace;
+  --font-size: 1rem;
+  --content-padding: 0.5rem;
+  --bg-body: color(var(--background) blend(var(--foreground) 86%));
+  --bg-even: var(--background);
+  --bg-odd:  color(var(--background) blend(var(--foreground) 92%));
+  --border: 1px solid color(var(--foreground) blend(var(--background) 20%));
+}
+
+body {
+  padding: var(--content-padding);
+  font-size: var(--font-size);
+  background-color: var(--bg-body);
+  border: var(--border);
+  width: 34rem;
+}
+
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  font-family: var(--font);
+  color: var(--foreground);
+  border: var(--border);
+  border-radius: 5px;
+}
+
+.btn-error {
+  background-color: var(--btn-redish);
+}
+
+.close {
+  padding: 0 1px 2rem 0;
+  text-align: right;
+}
+
+.close-btn {
+  display: inline-block;
+  background-color: color(var(--background) blend(var(--redish) 50%));
+}
+
+.close-btn,
+.close-btn .btn-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.header {
+  margin: 0 0 0 0;
+  padding: 1rem .25rem 1rem .25rem;
+  font-weight: normal;
+}
+
+.table {
+  margin: 0 0 2rem 0;
+}
+
+.tr {
+  height: 3.75rem;
+}
+
+.tr-even {
+  background-color: var(--bg-even);
+}
+
+.tr-odd {
+  background-color: var(--bg-odd);
+}
+
+.td {
+  display: inline-block;
+}
+
+.main {
+  padding: 0 0 0 .625rem;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+
+.text-btn {
+  position: relative;
+  top: -.625rem;
+  padding: .3333333333rem 0 .3333333333rem .5rem;
+}
+
+.aside {
+  width: 13rem;
+  padding: .625rem .725rem 0 0;
+  text-align: right;
+}
+
+.action-btn {
+  width: 2.25rem;
+  margin: 0 .625rem 0 0;
+}
+
+.btn-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+}

@@ -1,0 +1,16 @@
+[
+    {
+        "caption": "Shelf: Add this to the project shelf",
+        "command": "shelf_add",
+        "args": {"shelf": "project"}
+    },
+    {
+        "caption": "Shelf: Add this to the common shelf",
+        "command": "shelf_add",
+        "args": {"shelf": "common"}
+    },
+    {
+        "caption": "Shelf: View",
+        "command": "shelf_view"
+    }
+]
