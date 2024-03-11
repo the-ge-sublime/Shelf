@@ -30,13 +30,13 @@ class Shelf():
             writer.writerows(items)
 
     def add(self, item):
-        print(f'Adding item to {self.key} shelf...')
+        print('Adding item to ' + str(self.key) + ' shelf...')
         name = os.path.basename(item)
         new = (name, item)
         items = self.read()
 
         if new in items:
-            print(f'Item already on the {self.key} shelf')
+            print('Item already on the ' + str(self.key) + ' shelf')
             return
 
         items += (new,)
@@ -61,7 +61,7 @@ class Shelf():
         self.write(items[0:k] + (items[k + 1],) + (item,) + items[k + 2:])
 
     def remove(self, item):
-        print(f'Removing item to {self.key} shelf...')
+        print('Removing item from the ' + str(self.key) + ' shelf...')
         items = self.read()
         if item in items:
             k = items.index(item)
@@ -81,7 +81,7 @@ class ProjectShelf(Shelf):
     def __init__(self):
         project = sublime.active_window().project_file_name()
         if project:
-            project = f'{project}.shelf'
+            project = project + '.shelf'
         else:
             print('No project to put a shelf on')
 
