@@ -63,12 +63,13 @@ class Renderer:
         args = {'item': item, 'shelf': shelf}
         clss='btn action-btn'
         _, path = item
+        containing_folder_path = os.path.dirname(path)
         side_actions = self.render_action(
             'open_dir',
-            {'dir': os.path.dirname(path)},
+            {'dir': containing_folder_path},
             self.icon('folder'),
             clss,
-            'Open containing folder'
+            f'Open containing folder ({containing_folder_path})'
         )
         actions = [
             ('shelf_item_move_up', self.icon('arrow-up'), 'Move up'),
