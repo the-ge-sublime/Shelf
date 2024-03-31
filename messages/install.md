@@ -1,0 +1,3 @@
+# Welcome to the Shelf!
+
+Please restart Sublime Text after installing.
