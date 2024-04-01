@@ -1,4 +1,13 @@
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
+#
+# File name: main.py
+# Created:   2024-03-11 09:24
+# @author    Gabriel Tenita <dev2023@tenita.eu>
+# @link      https://github.com/the-ge/
+# @copyright Copyright (c) 2024-present Gabriel Tenita
+# @license   https://www.apache.org/licenses/LICENSE-2.0 Apache License version 2.0
+#
 # [TODO]
 # - convert PNGs to data URIs and change their color with Python
 # - tab context menu
@@ -13,8 +22,8 @@
 
 import sublime
 import sublime_plugin
-from Shelf.core.shelf import CommonShelf, ProjectShelf
-from Shelf.core.renderer import Renderer
+from .core.shelf import CommonShelf, ProjectShelf
+from .core.renderer import Renderer
 #from Shelf.core.debug import _d
 
 
