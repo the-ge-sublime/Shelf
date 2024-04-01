@@ -10,3 +10,4 @@
 
 
 __version__ = '0.0.3'
+sublimetext_build_min = 4085
