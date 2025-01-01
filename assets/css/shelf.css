@@ -10,23 +10,23 @@ html {
   --bg-body: color(var(--background) blend(var(--foreground) 86%));
   --bg-even: var(--background);
   --bg-odd:  color(var(--background) blend(var(--foreground) 92%));
-  --border: 1px solid color(var(--foreground) blend(var(--background) 20%));
+  --action-border: 1px solid color(var(--foreground) blend(var(--background) 20%));
 }
 
 body {
   padding: var(--content-padding);
   font-size: var(--font-size);
   background-color: var(--bg-body);
-  border: var(--border);
-  width: 34rem;
+  border: var(--action-border);
+  width: var(--body-width);
 }
 
 .btn {
   display: inline-block;
+  width: 2.25rem;
+  margin: 0 .5rem 0 0;
   text-decoration: none;
   font-family: var(--font);
-  color: var(--foreground);
-  border: var(--border);
   border-radius: 5px;
 }
 
@@ -50,9 +50,15 @@ body {
   height: 28px;
 }
 
+.action-btn {
+  color: var(--foreground);
+  border: var(--action-border);
+}
+
 .header {
-  margin: 0 0 0 0;
-  padding: 1rem .25rem 1rem .25rem;
+  /*height: 3.75rem;*/
+  /*margin: 0 0 0 0;*/
+  /*padding: 1rem .25rem 1rem .25rem;*/
   font-weight: normal;
 }
 
@@ -60,43 +66,48 @@ body {
   margin: 0 0 2rem 0;
 }
 
-.tr {
+.row {
   height: 3.75rem;
 }
 
-.tr-even {
+/* Odd: inline-block link with no or transparent background-color is not block */
+.row-even,
+.row-even .title {
   background-color: var(--bg-even);
 }
 
-.tr-odd {
+.row-even .hidden-btn {
+  border: 1px solid color(var(--bg-even));
+}
+
+.row-odd,
+.row-odd .title {
   background-color: var(--bg-odd);
 }
 
-.td {
-  display: inline-block;
+.row-odd .hidden-btn {
+  border: 1px solid color(var(--bg-odd));
 }
 
-.main {
-  padding: 0 0 0 .625rem;
+.title {
+  display: inline-block;
+  position: relative;
+  top: -.65rem;
+  width: var(--title-width);
+  padding: 1.125rem 0 1.125rem .5rem;
   font-weight: normal;
   font-size: 1.1rem;
 }
 
-.text-btn {
-  position: relative;
-  top: -.625rem;
-  padding: .3333333333rem 0 .3333333333rem .5rem;
+.no-underline {
+  text-decoration: none;
 }
 
-.aside {
-  width: 13rem;
-  padding: .625rem .725rem 0 0;
+.actions {
+  display: inline-block;
+  width: var(--actions-width);
+  padding: .675rem 0;
   text-align: right;
-}
-
-.action-btn {
-  width: 2.25rem;
-  margin: 0 .625rem 0 0;
 }
 
 .btn-icon {
