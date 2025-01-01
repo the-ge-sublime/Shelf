@@ -30,8 +30,8 @@ class Shelf():
             writer.writerows(items)
 
     def add(self, item):
-        print('Adding item to ' + str(self.key) + ' shelf...')
         name = os.path.basename(item)
+        print('Adding ' + name + ' to ' + str(self.key) + ' shelf...')
         new = (name, item)
         items = self.read()
 
@@ -61,7 +61,7 @@ class Shelf():
         self.write(items[0:k] + (items[k + 1],) + (item,) + items[k + 2:])
 
     def remove(self, item):
-        print('Removing item from the ' + str(self.key) + ' shelf...')
+        print('Removing ' + item[0] + ' from the ' + str(self.key) + ' shelf...')
         items = self.read()
         if item in items:
             k = items.index(item)
