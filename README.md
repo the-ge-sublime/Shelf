@@ -29,6 +29,7 @@ The plugin provides three actions in the Command Palette (Ctrl+Shift+P in Linux)
     * move the file up in the list (click on the up-arrow icon next to the file name);
     * move the file down in the list (click on the down-arrow icon next to the file name);
     * remove the file from the list (click on the trash icon next to the file name);
+
 ![](preview.png)
 
 ## Settings
