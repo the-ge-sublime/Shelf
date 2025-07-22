@@ -20,41 +20,36 @@ class Renderer:
         # by calculating the file names column length using a totally magic factor
         title_rems = math.ceil(max(prject_max_len, common_max_len) * 0.675)
         actions_rems = 12
-        css = (
-            '<style>\n'
-            + sublime.load_resource('Packages/Shelf/assets/css/shelf.css').strip()
-            + '\n\n'
-            + 'html {\n'
-            + '  --body-width: ' + str(title_rems + actions_rems + 2) + 'rem;\n'
-            + '  --title-width: ' + str(title_rems) + 'rem;\n'
-            + '  --actions-width: ' + str(actions_rems) + 'rem;\n'
-            + '}\n'
-            + '</style>\n'
-        )
+        css = f"""
+            <style>
+                {sublime.load_resource('Packages/Shelf/assets/css/shelf.css').strip()}
+                html {{
+                  --body-width: {str(title_rems + actions_rems + 2)}rem;
+                  --title-width: {str(title_rems)}rem;
+                  --actions-width: {str(actions_rems)}rem;
+                }}
+            </style>"""
 
-        return (
-            '\n'
-            + '<body id="shelf-popup">\n'
-            + css
-            + '    <div class="close">\n'
-            + '        <a href="#" class="close-btn btn"><img class="btn-icon" src="res://Packages/Shelf/assets/img/close-' + self.color_scheme + '.png"></a>'
-            + '    </div>\n'
-            + '    <div class="table">\n'
-            + project_shelf_items
-            + '    </div>\n'
-            + '    <div class="table">\n'
-            + common_shelf_items
-            + '    </div>\n'
-            + '    </body>'
-        )
+        return f"""
+            <body id="shelf-popup">
+                {css}
+                <div class="close">
+                    <a href="#" class="close-btn btn">
+                        <img class="btn-icon" src="res://Packages/Shelf/assets/img/close-{self.color_scheme}.png">
+                    </a>
+                </div>
+                <div class="table">{project_shelf_items}</div>
+                <div class="table">{common_shelf_items}</div>
+            </body>"""
 
     def render_shelf(self, shelf):
-        rendered = (
-            '        <div class="row">\n'
-            + '            <h4 class="title">' + shelf.key.upper() + '</h4>\n'
-            + '            <div class="actions">' + self.render_open_file_action(shelf.file, self.icon('edit'), self.action_clss) + '</div>\n'
-            + '        </div>\n'
-        )
+        rendered = f"""
+            <div class="row">
+                <h4 class="title">{shelf.key.upper()}</h4>
+                <div class="actions">
+                    {self.render_open_file_action(shelf.file, self.icon('edit'), self.action_clss)}
+                </div>
+            </div>"""
 
         items = shelf.read()
         max_len, is_odd, k, count = 0, False, 0, len(items)
@@ -62,12 +57,12 @@ class Renderer:
             name, path = item = items[k]
             alt_class = 'row-' + ('odd' if is_odd else 'even')
             is_movable = (k > 0) and (k < count)
-            rendered += (
-                '        <div class="row ' + alt_class + '">\n'
-                + '            ' + self.render_open_file_action(path, name, 'title no-underline') + '\n'
-                + '            <div class="actions">' + self.side_actions(item, shelf.key, k, count) + '</div>\n'
-                + '        </div>\n'
-            )
+            rendered += f"""
+                        <div class="row {alt_class}">
+                            {self.render_open_file_action(path, name, 'title no-underline')}
+                            <div class="actions">{self.side_actions(item, shelf.key, k, count)}</div>
+                        </div>
+            """
             max_len = max(max_len, len(name))
             is_odd = not is_odd
             k += 1
@@ -86,7 +81,7 @@ class Renderer:
         )
 
     def icon(self, icon_name):
-        return '<img class="btn-icon" src="res://Packages/Shelf/assets/img/' + icon_name + '-' + self.color_scheme + '.png">'
+        return f'<img class="btn-icon" src="res://Packages/Shelf/assets/img/{icon_name}-{self.color_scheme}.png">'
 
     def render_open_file_action(self, path, text, clss):
         return self.render_link('Open ' + path, 'open_file', {'file': path, 'content': 'Could not open ' + path}, text, clss)
@@ -104,5 +99,5 @@ class Renderer:
 
     def render_link(self, title, href, args, text, clss=''):
         href = 'subl:' + sublime.html_format_command(href, args)
-        clss = (' class="' + clss + '"') if clss else ''
-        return '<a href="' + href + '"' + clss + ' title="' + title + '">' + text + '</a>'
+        clss = f' class="{clss}"' if clss else ''
+        return f'<a href="{href}"{clss} title="{title}">{text}</a>'

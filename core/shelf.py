@@ -30,12 +30,12 @@ class Shelf:
 
     def add(self, item):
         name = os.path.basename(item)
-        print('Adding ' + name + ' to ' + str(self.key) + ' shelf...')
+        print(f'Adding {name} to {str(self.key)} shelf...')
         new = (name, item)
         items = self.read()
 
         if new in items:
-            print('Item already on the ' + str(self.key) + ' shelf')
+            print('Item already on the {str(self.key)} shelf')
             return
 
         items += (new,)
@@ -80,7 +80,7 @@ class ProjectShelf(Shelf):
     def __init__(self):
         project = sublime.active_window().project_file_name()
         if project:
-            project = project + '.shelf'
+            project = f'{project}.shelf'
         else:
             print('No project to put a shelf on')
 
