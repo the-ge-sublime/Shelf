@@ -15,15 +15,20 @@ class Shelf:
             with open(self.file, 'w', encoding='utf_8'):
                 pass
 
+    def hasFile(self):
+        return self.file and os.path.exists(self.file)
     def read(self):
-        items = ()
-        if self.file and os.path.exists(self.file):
-            with open(self.file, 'r', encoding='utf_8', newline='') as f:
-                items = tuple(tuple(row) for row in csv.reader(f))
+        if not self.hasFile():
+            return ()
+
+        with open(self.file, 'r', encoding='utf_8', newline='') as f:
+            items = tuple(tuple(row) for row in csv.reader(f))
 
         return items
 
     def write(self, items):
+        if not self.hasFile():
+            return ()
         with open(self.file, 'w+', encoding='utf_8', newline='') as f:
             writer = csv.writer(f)
             writer.writerows(items)
