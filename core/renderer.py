@@ -56,7 +56,6 @@ class Renderer:
         while k < count:
             name, path = item = items[k]
             alt_class = 'row-' + ('odd' if is_odd else 'even')
-            is_movable = (k > 0) and (k < count)
             rendered += f"""
                         <div class="row {alt_class}">
                             {self.render_open_file_action(path, name, 'title no-underline')}
