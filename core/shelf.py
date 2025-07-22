@@ -85,8 +85,4 @@ class ProjectShelf(Shelf):
     def __init__(self):
         project = sublime.active_window().project_file_name()
         if project:
-            project = f'{project}.shelf'
-        else:
-            print('No project to put a shelf on')
-
-        super().__init__(project)
+            super().__init__(f'{project}.shelf')
