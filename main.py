@@ -20,7 +20,6 @@
 # - set a min-width
 # - detect when file is already opened and alert
 
-import sublime
 import sublime_plugin
 from .core.shelf import CommonShelf, ProjectShelf
 from .core.renderer import Renderer

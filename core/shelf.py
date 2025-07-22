@@ -1,5 +1,4 @@
 import sublime
-import sublime_plugin
 import os
 import csv
 #from Shelf.core.debug import _d
