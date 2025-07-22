@@ -14,11 +14,19 @@ class Renderer:
     def render_shelves(self, color_scheme):
         self.color_scheme = color_scheme
 
-        project_shelf_file, project_shelf_items, prject_max_len = self.render_shelf(ProjectShelf())
-        common_shelf_file, common_shelf_items, common_max_len = self.render_shelf(CommonShelf())
+        _, common_shelf_items, common_max_len = self.render_shelf(CommonShelf())
+        title_max_len = common_max_len
+
+        project = sublime.active_window().project_file_name()
+        project_render = ''
+        if project:
+            _, project_shelf_items, prject_max_len = self.render_shelf(ProjectShelf())
+            project_render += f"""
+                <div class="table">{project_shelf_items}</div>"""
+            title_max_len = math.ceil(max(prject_max_len, common_max_len))
         # make up for the lack of table support in minihtml
         # by calculating the file names column length using a totally magic factor
-        title_rems = math.ceil(max(prject_max_len, common_max_len) * 0.675)
+        title_rems = title_max_len * 0.675
         actions_rems = 12
         css = f"""
             <style>
@@ -38,7 +46,7 @@ class Renderer:
                         <img class="btn-icon" src="res://Packages/Shelf/assets/img/close-{self.color_scheme}.png">
                     </a>
                 </div>
-                <div class="table">{project_shelf_items}</div>
+                {project_render}
                 <div class="table">{common_shelf_items}</div>
             </body>"""
 
