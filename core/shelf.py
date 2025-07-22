@@ -4,7 +4,7 @@ import csv
 #from Shelf.core.debug import _d
 
 
-class Shelf():
+class Shelf:
     key = None
 
     def __init__(self, file):
