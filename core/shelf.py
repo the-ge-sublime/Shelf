@@ -17,6 +17,7 @@ class Shelf:
 
     def hasFile(self):
         return self.file and os.path.exists(self.file)
+
     def read(self):
         if not self.hasFile():
             return ()
@@ -27,8 +28,6 @@ class Shelf:
         return items
 
     def write(self, items):
-        if not self.hasFile():
-            return ()
         with open(self.file, 'w+', encoding='utf_8', newline='') as f:
             writer = csv.writer(f)
             writer.writerows(items)
