@@ -28,13 +28,14 @@ class Shelf:
         return items
 
     def write(self, items):
+        if not self.hasFile():
+            print(f'Creating {self.file} file...')
         with open(self.file, 'w+', encoding='utf_8', newline='') as f:
             writer = csv.writer(f)
             writer.writerows(items)
 
     def add(self, item):
         name = os.path.basename(item)
-        print(f'Adding {name} to {str(self.key)} shelf...')
         new = (name, item)
         items = self.read()
 
@@ -44,6 +45,7 @@ class Shelf:
 
         items += (new,)
         self.write(items)
+        print(f'Added {name} to {str(self.key)} shelf.')
 
     def move_up(self, item):
         items = self.read()
@@ -64,12 +66,12 @@ class Shelf:
         self.write(items[0:k] + (items[k + 1],) + (item,) + items[k + 2:])
 
     def remove(self, item):
-        print('Removing ' + item[0] + ' from the ' + str(self.key) + ' shelf...')
         items = self.read()
         if item in items:
             k = items.index(item)
             items = items[0:k] + items[k + 1:]
             self.write(items)
+        print('Removed ' + item[0] + ' from the ' + str(self.key) + ' shelf.')
 
 
 class CommonShelf(Shelf):
