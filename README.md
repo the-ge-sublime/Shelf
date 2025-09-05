@@ -41,3 +41,7 @@ The available commands are (see also the `Default.sublime-commands` file):
 * View shelf: `{"command": "shelf_view" }`
 * Add the current file to the project shelf: `{ "command": "shelf_add", "args": {"shelf": "project"} }`;
 * Add the current file to the common shelf: `{ "command": "shelf_add", "args": {"shelf": "common"} }`;
+
+## TODO
+
+* Add a way to put directories on the shelves (need to think UI).
