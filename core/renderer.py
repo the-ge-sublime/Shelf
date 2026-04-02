@@ -16,51 +16,56 @@ class Renderer:
     def render_shelves(self, foreground_hex):
         self.color_scheme = self.get_color_scheme(foreground_hex)
 
-        _, common_shelf_items, common_max_len = self.render_shelf(CommonShelf())
-        title_max_len = common_max_len
+        _, common_shelf_items, title_max_len = self.render_shelf(CommonShelf())
 
         project = sublime.active_window().project_file_name()
-        project_render = ''
         if project:
             _, project_shelf_items, prject_max_len = self.render_shelf(ProjectShelf())
-            project_render += f"""
-                <div class="table">{project_shelf_items}</div>"""
-            title_max_len = math.ceil(max(prject_max_len, common_max_len))
+            title_max_len = math.ceil(max(prject_max_len, title_max_len))
+
+        # https://www.sublimetext.com/docs/minihtml.html
         # make up for the lack of table support in minihtml
         # by calculating the file names column length using a totally magic factor
         title_rems = title_max_len * 0.75
         actions_rems = 12
-        css = f"""
-            <style>
-                {sublime.load_resource(f'{self.raw_src}/css/shelf.css').strip()}
-                html {{
-                  --body-width: {str(title_rems + actions_rems + 2)}rem;
-                  --title-width: {str(title_rems)}rem;
-                  --actions-width: {str(actions_rems)}rem;
-                }}
-            </style>"""
+        html = f"""<style>
+    {sublime.load_resource(f'{self.raw_src}/css/shelf.css').strip()}
 
-        return f"""
-            <body id="shelf-popup">
-                {css}
-                <div class="close">
-                    <a href="#" class="close-btn btn">
-                        <img class="btn-icon" src="res://{self.raw_src}/img/close-{self.color_scheme}.png">
-                    </a>
-                </div>
-                {project_render}
-                <div class="table">{common_shelf_items}</div>
-            </body>"""
+    html {{
+      --body-width: {str(title_rems + actions_rems + 2)}rem;
+      --title-width: {str(title_rems)}rem;
+      --actions-width: {str(actions_rems)}rem;
+    }}
+</style>
+
+<body id="shelf-popup">
+
+    <div class="close">
+        <a href="#" class="close-btn btn">
+            <img class="btn-icon" src="res://{self.raw_src}/img/close-{self.color_scheme}.png">
+        </a>
+    </div>
+
+    {project_shelf_items}
+    {common_shelf_items}
+</body>
+"""
+        # sublime.set_clipboard(html) # [DEBUG]
+
+        return html
 
 
     def render_shelf(self, shelf):
         rendered = f"""
-            <div class="row">
-                <h4 class="title">{shelf.key.upper()}</h4>
-                <div class="actions">
-                    {self.render_open_file_action(shelf.file, self.icon('edit'), self.action_clss)}
-                </div>
-            </div>"""
+    <div class="table">
+
+        <div class="row">
+            <div class="shelf title">{shelf.key.upper()}</div>
+            <div class="actions">
+                {self.render_open_file_action(shelf.file, self.icon('edit'), self.action_clss)}
+            </div>
+        </div>
+"""
 
         items = shelf.read()
         max_len, is_odd, k, count = 0, False, 0, len(items)
@@ -68,14 +73,18 @@ class Renderer:
             name, path = item = items[k]
             alt_class = 'row-' + ('odd' if is_odd else 'even')
             rendered += f"""
-                        <div class="row {alt_class}">
-                            {self.render_open_file_action(path, name, 'title no-underline')}
-                            <div class="actions">{self.side_actions(item, shelf.key, k, count)}</div>
-                        </div>
-            """
+        <div class="row {alt_class}">
+            {self.render_open_file_action(path, name, 'title no-underline')}
+            <div class="actions">{self.side_actions(item, shelf.key, k, count)}</div>
+        </div>
+"""
             max_len = max(max_len, len(name))
             is_odd = not is_odd
             k += 1
+
+        rendered += f"""
+    </div>
+"""
 
         return shelf.file, rendered, max_len
 
