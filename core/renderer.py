@@ -27,7 +27,7 @@ class Renderer:
             title_max_len = math.ceil(max(prject_max_len, common_max_len))
         # make up for the lack of table support in minihtml
         # by calculating the file names column length using a totally magic factor
-        title_rems = title_max_len * 0.675
+        title_rems = title_max_len * 0.75
         actions_rems = 12
         css = f"""
             <style>
