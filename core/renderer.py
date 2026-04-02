@@ -8,6 +8,7 @@ from Shelf.core.shelf import CommonShelf, ProjectShelf
 
 
 class Renderer:
+    raw_src = 'Packages/Shelf/assets'
     action_clss = 'btn action-btn'
     disabled_clss = 'btn disabled-btn'
 
@@ -30,7 +31,7 @@ class Renderer:
         actions_rems = 12
         css = f"""
             <style>
-                {sublime.load_resource('Packages/Shelf/assets/css/shelf.css').strip()}
+                {sublime.load_resource(f'{self.raw_src}/css/shelf.css').strip()}
                 html {{
                   --body-width: {str(title_rems + actions_rems + 2)}rem;
                   --title-width: {str(title_rems)}rem;
@@ -43,7 +44,7 @@ class Renderer:
                 {css}
                 <div class="close">
                     <a href="#" class="close-btn btn">
-                        <img class="btn-icon" src="res://Packages/Shelf/assets/img/close-{self.color_scheme}.png">
+                        <img class="btn-icon" src="res://{self.raw_src}/img/close-{self.color_scheme}.png">
                     </a>
                 </div>
                 {project_render}
@@ -88,7 +89,7 @@ class Renderer:
         )
 
     def icon(self, icon_name):
-        return f'<img class="btn-icon" src="res://Packages/Shelf/assets/img/{icon_name}-{self.color_scheme}.png">'
+        return f'<img class="btn-icon" src="res://{self.raw_src}/img/{icon_name}-{self.color_scheme}.png">'
 
     def render_open_file_action(self, path, text, clss):
         return self.render_link('Open ' + path, 'open_file', {'file': path, 'content': 'Could not open ' + path}, text, clss)
