@@ -85,7 +85,7 @@ class Renderer:
         path = os.path.dirname(item[1])
 
         return (
-            self.render_action('Open ' + path, 'open_dir', {'dir': path}, 'folder')
+            self.render_action('Edit ' + path, 'open_dir', {'dir': path}, 'folder')
             + self.render_move_action('up', args, index > 0)
             + self.render_move_action('down', args, index < count - 1)
             + self.render_action('Remove', 'shelf_item_remove', args, 'trash')
@@ -97,7 +97,7 @@ class Renderer:
 
 
     def render_open_file_action(self, path, text, clss):
-        return self.render_link('Open ' + path, 'open_file', {'file': path, 'content': 'Could not open ' + path}, text, clss)
+        return self.render_link('Edit ' + path, 'open_file', {'file': path, 'content': 'Could not open ' + path}, text, clss)
 
 
     def render_move_action(self, key, args, is_enabled):
