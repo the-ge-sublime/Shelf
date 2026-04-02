@@ -28,11 +28,7 @@ from .core.renderer import Renderer
 
 class ShelfViewCommand(sublime_plugin.WindowCommand):
     def run(self):
-        foreground_hex = self.window.active_view().style()['foreground'].lstrip('#')
-        foreground_rgb = tuple(int(foreground_hex[i:i+2], 16) for i in (0, 2, 4))
-        color_scheme = 'dark' if foreground_rgb > (127, 127, 127) else 'light'
-
-        self.show_popup(Renderer().render_shelves(color_scheme))
+        self.show_popup(Renderer().render_shelves(self.window.active_view().style()['foreground']))
 
     def show_popup(self, text):
         view = self.window.active_view()
@@ -73,10 +69,7 @@ class ShelfItemMoveUpCommand(sublime_plugin.WindowCommand):
         shelf = CommonShelf() if shelf == 'common' else ProjectShelf()
         shelf.move_up(item)
 
-        foreground_hex = self.window.active_view().style()['foreground'].lstrip('#')
-        foreground_rgb = tuple(int(foreground_hex[i:i+2], 16) for i in (0, 2, 4))
-        color_scheme = 'dark' if foreground_rgb > (127, 127, 127) else 'light'
-        self.window.active_view().update_popup(Renderer().render_shelves(color_scheme))
+        self.window.active_view().update_popup(Renderer().render_shelves(self.window.active_view().style()['foreground']))
 
 
 class ShelfItemMoveDownCommand(sublime_plugin.WindowCommand):
@@ -89,10 +82,7 @@ class ShelfItemMoveDownCommand(sublime_plugin.WindowCommand):
         shelf = CommonShelf() if shelf == 'common' else ProjectShelf()
         shelf.move_down(item)
 
-        foreground_hex = self.window.active_view().style()['foreground'].lstrip('#')
-        foreground_rgb = tuple(int(foreground_hex[i:i+2], 16) for i in (0, 2, 4))
-        color_scheme = 'dark' if foreground_rgb > (127, 127, 127) else 'light'
-        self.window.active_view().update_popup(Renderer().render_shelves(color_scheme))
+        self.window.active_view().update_popup(Renderer().render_shelves(self.window.active_view().style()['foreground']))
 
 
 class ShelfItemRemoveCommand(sublime_plugin.WindowCommand):
@@ -105,7 +95,4 @@ class ShelfItemRemoveCommand(sublime_plugin.WindowCommand):
         shelf = CommonShelf() if shelf == 'common' else ProjectShelf()
         shelf.remove(item)
 
-        foreground_hex = self.window.active_view().style()['foreground'].lstrip('#')
-        foreground_rgb = tuple(int(foreground_hex[i:i+2], 16) for i in (0, 2, 4))
-        color_scheme = 'dark' if foreground_rgb > (127, 127, 127) else 'light'
-        self.window.active_view().update_popup(Renderer().render_shelves(color_scheme))
+        self.window.active_view().update_popup(Renderer().render_shelves(self.window.active_view().style()['foreground']))

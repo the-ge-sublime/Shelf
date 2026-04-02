@@ -12,8 +12,9 @@ class Renderer:
     action_clss = 'btn action-btn'
     disabled_clss = 'btn disabled-btn'
 
-    def render_shelves(self, color_scheme):
-        self.color_scheme = color_scheme
+
+    def render_shelves(self, foreground_hex):
+        self.color_scheme = self.get_color_scheme(foreground_hex)
 
         _, common_shelf_items, common_max_len = self.render_shelf(CommonShelf())
         title_max_len = common_max_len
@@ -51,6 +52,7 @@ class Renderer:
                 <div class="table">{common_shelf_items}</div>
             </body>"""
 
+
     def render_shelf(self, shelf):
         rendered = f"""
             <div class="row">
@@ -77,6 +79,7 @@ class Renderer:
 
         return shelf.file, rendered, max_len
 
+
     def side_actions(self, item, shelf, index, count):
         args = {'item': item, 'shelf': shelf}
         path = os.path.dirname(item[1])
@@ -88,11 +91,14 @@ class Renderer:
             + self.render_action('Remove', 'shelf_item_remove', args, 'trash')
         )
 
+
     def icon(self, icon_name):
         return f'<img class="btn-icon" src="res://{self.raw_src}/img/{icon_name}-{self.color_scheme}.png">'
 
+
     def render_open_file_action(self, path, text, clss):
         return self.render_link('Open ' + path, 'open_file', {'file': path, 'content': 'Could not open ' + path}, text, clss)
+
 
     def render_move_action(self, key, args, is_enabled):
         title = ('Move ' + key) if is_enabled else ''
@@ -102,10 +108,18 @@ class Renderer:
 
         return self.render_link(title, href, args, text, clss)
 
+
     def render_action(self, title, href, args, icon):
         return self.render_link(title, href, args, self.icon(icon), self.action_clss)
+
 
     def render_link(self, title, href, args, text, clss=''):
         href = 'subl:' + sublime.html_format_command(href, args)
         clss = f' class="{clss}"' if clss else ''
         return f'<a href="{href}"{clss} title="{title}">{text}</a>'
+
+
+    def get_color_scheme(self, foreground_hex):
+        foreground_hex = foreground_hex.lstrip('#')
+        foreground_rgb = tuple(int(foreground_hex[i:i+2], 16) for i in (0, 2, 4))
+        return 'dark' if foreground_rgb > (127, 127, 127) else 'light'
