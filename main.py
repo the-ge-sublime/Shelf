@@ -26,9 +26,6 @@ from .core.renderer import Renderer
 #from Shelf.core.debug import _d
 
 
-# version = 0.0.3
-
-
 class ShelfViewCommand(sublime_plugin.WindowCommand):
     def run(self):
         foreground_hex = self.window.active_view().style()['foreground'].lstrip('#')
