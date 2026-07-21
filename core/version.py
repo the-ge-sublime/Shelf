@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 #
 # File name: version.py
 # Created:   2024-03-31 12:52

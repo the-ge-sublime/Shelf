@@ -21,78 +21,82 @@
 # - detect when file is already opened and alert
 
 import sublime_plugin
-from .core.shelf import CommonShelf, ProjectShelf
+
 from .core.renderer import Renderer
+from .core.shelf import CommonShelf, ProjectShelf
+
 #from Shelf.core.debug import _d
 
 
-class ShelfViewCommand(sublime_plugin.WindowCommand):
-    def run(self):
-        self.show_popup(Renderer().render_shelves(self.window.active_view().style()['foreground']))
+def get_shelf(name):
+    shelves = {
+        "common": CommonShelf,
+        "project": ProjectShelf,
+    }
 
-    def show_popup(self, text):
+    try:
+        return shelves[name]()
+    except KeyError:
+        raise ValueError(f"Unknown shelf: {name}") from None
+
+
+class ShelfCommand(sublime_plugin.WindowCommand):
+    """Common helpers shared by all shelf commands."""
+
+    def render(self):
         view = self.window.active_view()
-        max_width, max_height = view.viewport_extent()
-        region = view.visible_region()
+        return Renderer().render_shelves(view.style()["foreground"])
+
+    def refresh_popup(self):
+        self.window.active_view().update_popup(self.render())
+
+
+class ShelfViewCommand(ShelfCommand):
+    def run(self):
+        self.show_popup(self.render())
+
+    def show_popup(self, content):
+        view = self.window.active_view()
+
+        width, height = view.viewport_extent()
+        location = view.visible_region().a
+
         view.show_popup(
-            content=text,
-            location=region.a,
-            on_navigate=self.on_close_popup,
-            max_height=max_height,
-            max_width=max_width,
-            # flags=sublime.KEEP_ON_SELECTION_MODIFIED
+            content=content,
+            location=location,
+            on_navigate=self.on_navigate,
+            max_width=width,
+            max_height=height,
+            # flags=sublime.KEEP_ON_SELECTION_MODIFIED,
         )
 
-    def on_close_popup(self, href):
-        if href == '#':
+    def on_navigate(self, href):
+        if href == "#":
             self.window.active_view().hide_popup()
 
 
-class ShelfAddCommand(sublime_plugin.WindowCommand):
+class ShelfAddCommand(ShelfCommand):
     def run(self, shelf):
-        if shelf != 'project' and shelf != 'common':
-            raise TypeError('Unknown <' + shelf + '> shelf')
-        shelf = CommonShelf() if shelf == 'common' else ProjectShelf()
-
         item = self.window.active_view().file_name()
-        if item:
-            shelf.add(item)
+        if not item:
+            return
+
+        get_shelf(shelf).add(item)
 
 
-class ShelfItemMoveUpCommand(sublime_plugin.WindowCommand):
+class ShelfItemMoveUpCommand(ShelfCommand):
     def run(self, item, shelf):
-        item = tuple(item)
-
-        if shelf != 'project' and shelf != 'common':
-            raise TypeError('Unknown <' + shelf + '> shelf')
-
-        shelf = CommonShelf() if shelf == 'common' else ProjectShelf()
-        shelf.move_up(item)
-
-        self.window.active_view().update_popup(Renderer().render_shelves(self.window.active_view().style()['foreground']))
+        get_shelf(shelf).move_up(tuple(item))
+        self.refresh_popup()
 
 
-class ShelfItemMoveDownCommand(sublime_plugin.WindowCommand):
+class ShelfItemMoveDownCommand(ShelfCommand):
     def run(self, item, shelf):
-        item = tuple(item)
-
-        if shelf != 'project' and shelf != 'common':
-            raise TypeError('Unknown <' + shelf + '> shelf')
-
-        shelf = CommonShelf() if shelf == 'common' else ProjectShelf()
-        shelf.move_down(item)
-
-        self.window.active_view().update_popup(Renderer().render_shelves(self.window.active_view().style()['foreground']))
+        get_shelf(shelf).move_down(tuple(item))
+        self.refresh_popup()
 
 
-class ShelfItemRemoveCommand(sublime_plugin.WindowCommand):
+class ShelfItemRemoveCommand(ShelfCommand):
     def run(self, shelf, item):
-        item = tuple(item)
-
-        if shelf != 'project' and shelf != 'common':
-            raise TypeError('Unknown <' + shelf + '> shelf')
-
-        shelf = CommonShelf() if shelf == 'common' else ProjectShelf()
-        shelf.remove(item)
-
-        self.window.active_view().update_popup(Renderer().render_shelves(self.window.active_view().style()['foreground']))
+        get_shelf(shelf).remove(tuple(item))
+        self.refresh_popup()

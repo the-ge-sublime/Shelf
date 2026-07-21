@@ -10,7 +10,8 @@
 
 
 import sublime
+
 from .core.version import sublimetext_build_min
 
 if int(sublime.version()) < sublimetext_build_min:
-    raise RuntimeError('Shelf only works with Sublime Text build ' + str(sublimetext_build_min) + ' or later.')
+    raise RuntimeError(f'Shelf only works with Sublime Text build {sublimetext_build_min!s} or later.')

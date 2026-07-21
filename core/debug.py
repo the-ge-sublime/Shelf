@@ -19,7 +19,7 @@ def print_location(active=True, offset=0, levels=1, end='\n'):
         frame = caller_frame_record[0]
         info = inspect.getframeinfo(frame)
         file = info.filename
-        print('[{}:{} {}()]'.format(file, info.lineno, info.function), end=end)
+        print(f'[{file}:{info.lineno} {info.function}()]', end=end)
 
 
 def _d(*args, **kwargs):
@@ -64,4 +64,4 @@ def _d(*args, **kwargs):
     print(*args, **kwargs)
 
 def tup1st(tuple):
-    return list(zip(*tuple))[0]
+    return next(zip(*tuple))

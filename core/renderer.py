@@ -1,134 +1,228 @@
 # -*- coding: UTF-8 -*-
 # https://www.sublimetext.com/docs/minihtml.html
 
-import sublime
-import os
 import math
+import os
+
+import sublime
+
 from Shelf.core.shelf import CommonShelf, ProjectShelf
 
 
 class Renderer:
-    raw_src = 'Packages/Shelf/assets'
-    action_clss = 'btn action-btn'
-    disabled_clss = 'btn disabled-btn'
+    RAW_SRC = "Packages/Shelf/assets"
 
+    ACTION_CLASS = "btn action-btn"
+    DISABLED_CLASS = "btn disabled-btn"
 
     def render_shelves(self, foreground_hex):
-        self.color_scheme = self.get_color_scheme(foreground_hex)
+        color_scheme = self.get_color_scheme(foreground_hex)
 
-        _, common_shelf_items, title_max_len = self.render_shelf(CommonShelf())
+        _, common_html, common_width = self.render_shelf(
+            CommonShelf(), color_scheme
+        )
 
-        project = sublime.active_window().project_file_name()
-        if project:
-            _, project_shelf_items, prject_max_len = self.render_shelf(ProjectShelf())
-            title_max_len = math.ceil(max(prject_max_len, title_max_len))
+        project_html = ""
+        title_width = common_width
 
-        # https://www.sublimetext.com/docs/minihtml.html
-        # make up for the lack of table support in minihtml
-        # by calculating the file names column length using a totally magic factor
-        title_rems = title_max_len * 0.75
+        if sublime.active_window().project_file_name():
+            _, project_html, project_width = self.render_shelf(
+                ProjectShelf(), color_scheme
+            )
+            title_width = max(title_width, project_width)
+
+        title_rems = math.ceil(title_width) * 0.75
         actions_rems = 12
-        html = f"""<style>
-    {sublime.load_resource(f'{self.raw_src}/css/shelf.css').strip()}
+        caption_actions_rems = 9.25
 
-    html {{
-      --body-width: {str(title_rems + actions_rems + 2)}rem;
-      --title-width: {str(title_rems)}rem;
-      --actions-width: {str(actions_rems)}rem;
-    }}
+        css = sublime.load_resource(
+            f"{self.RAW_SRC}/css/shelf.css"
+        ).strip()
+
+        return f"""<style>
+{css}
+
+html {{
+  --body-width: {title_rems + actions_rems + 2}rem;
+  --title-width: {title_rems}rem;
+  --actions-width: {actions_rems}rem;
+  --caption-actions-width: {caption_actions_rems}rem;
+}}
 </style>
 
 <body id="shelf-popup">
 
     <div class="close">
         <a href="#" class="close-btn btn">
-            <img class="btn-icon" src="res://{self.raw_src}/img/close-{self.color_scheme}.png">
+            {self.icon("close", color_scheme)}
         </a>
     </div>
 
-    {project_shelf_items}
-    {common_shelf_items}
+    {project_html}
+    {common_html}
+
 </body>
 """
-        # sublime.set_clipboard(html) # [DEBUG]
 
-        return html
-
-
-    def render_shelf(self, shelf):
+    def render_shelf(self, shelf, color_scheme):
+        items = shelf.read()
+        shelf_title_suffix = '&nbsp;' * (8 - len(shelf.key))
         rendered = f"""
     <div class="table">
 
-        <div class="row">
-            <div class="shelf title">{shelf.key.upper()}</div>
+        <div class="th row">
+            {shelf.key.upper()}{shelf_title_suffix}
             <div class="actions">
-                {self.render_open_file_action(shelf.file, self.icon('edit'), self.action_clss)}
+                {self.render_open_file_action(
+                    shelf.file,
+                    self.icon("edit", color_scheme),
+                    "title no-underline",
+                )}
+            </div>
+        </div>
+"""
+        max_len = 0
+        for index, (name, path) in enumerate(items):
+            row_class = "row-even" if index % 2 == 0 else "row-odd"
+
+            rendered += f"""
+        <div class="row {row_class}">
+            {self.render_open_file_action(
+                path,
+                name,
+                "title no-underline",
+            )}
+            <div class="actions">
+                {self.side_actions(
+                    (name, path),
+                    shelf.key,
+                    index,
+                    len(items),
+                    color_scheme,
+                )}
             </div>
         </div>
 """
 
-        items = shelf.read()
-        max_len, is_odd, k, count = 0, False, 0, len(items)
-        while k < count:
-            name, path = item = items[k]
-            alt_class = 'row-' + ('odd' if is_odd else 'even')
-            rendered += f"""
-        <div class="row {alt_class}">
-            {self.render_open_file_action(path, name, 'title no-underline')}
-            <div class="actions">{self.side_actions(item, shelf.key, k, count)}</div>
-        </div>
-"""
             max_len = max(max_len, len(name))
-            is_odd = not is_odd
-            k += 1
 
-        rendered += f"""
+        rendered += """
     </div>
 """
 
         return shelf.file, rendered, max_len
 
+    def side_actions(
+        self,
+        item,
+        shelf,
+        index,
+        count,
+        color_scheme,
+    ):
+        args = {
+            "item": item,
+            "shelf": shelf,
+        }
 
-    def side_actions(self, item, shelf, index, count):
-        args = {'item': item, 'shelf': shelf}
         path = os.path.dirname(item[1])
 
         return (
-            self.render_action('Edit ' + path, 'open_dir', {'dir': path}, 'folder')
-            + self.render_move_action('up', args, index > 0)
-            + self.render_move_action('down', args, index < count - 1)
-            + self.render_action('Remove', 'shelf_item_remove', args, 'trash')
+            self.render_action(
+                f"Edit {path}",
+                "open_dir",
+                {"dir": path},
+                "folder",
+                color_scheme,
+            )
+            + self.render_move_action(
+                "up",
+                args,
+                index > 0,
+                color_scheme,
+            )
+            + self.render_move_action(
+                "down",
+                args,
+                index < count - 1,
+                color_scheme,
+            )
+            + self.render_action(
+                "Remove",
+                "shelf_item_remove",
+                args,
+                "trash",
+                color_scheme,
+            )
         )
 
+    def icon(self, name, color_scheme):
+        return (
+            f'<img class="btn-icon" '
+            f'src="res://{self.RAW_SRC}/img/{name}-{color_scheme}.png">'
+        )
 
-    def icon(self, icon_name):
-        return f'<img class="btn-icon" src="res://{self.raw_src}/img/{icon_name}-{self.color_scheme}.png">'
+    def render_open_file_action(self, path, text, css_class):
+        return self.render_link(
+            f"Edit {path}",
+            "open_file",
+            {
+                "file": path,
+                "content": f"Could not open {path}",
+            },
+            text,
+            css_class,
+        )
 
+    def render_move_action(
+        self,
+        direction,
+        args,
+        enabled,
+        color_scheme,
+    ):
+        return self.render_link(
+            f"Move {direction}" if enabled else "",
+            f"shelf_item_move_{direction}" if enabled else "",
+            args,
+            self.icon(f"arrow-{direction}", color_scheme)
+            if enabled
+            else "&nbsp;",
+            self.ACTION_CLASS if enabled else self.DISABLED_CLASS,
+        )
 
-    def render_open_file_action(self, path, text, clss):
-        return self.render_link('Edit ' + path, 'open_file', {'file': path, 'content': 'Could not open ' + path}, text, clss)
+    def render_action(
+        self,
+        title,
+        command,
+        args,
+        icon,
+        color_scheme,
+    ):
+        return self.render_link(
+            title,
+            command,
+            args,
+            self.icon(icon, color_scheme),
+            self.ACTION_CLASS,
+        )
 
+    @staticmethod
+    def render_link(title, command, args, text, css_class=""):
+        href = "subl:" + sublime.html_format_command(command, args)
+        css = f' class="{css_class}"' if css_class else ""
 
-    def render_move_action(self, key, args, is_enabled):
-        title = ('Move ' + key) if is_enabled else ''
-        href = ('shelf_item_move_' + key) if is_enabled else ''
-        text = self.icon('arrow-' + key) if is_enabled else '&nbsp;'
-        clss = self.action_clss if is_enabled else self.disabled_clss
+        return (
+            f'<a href="{href}"{css} '
+            f'title="{title}">{text}</a>'
+        )
 
-        return self.render_link(title, href, args, text, clss)
+    @staticmethod
+    def get_color_scheme(foreground_hex):
+        foreground_hex = foreground_hex.lstrip("#")
+        rgb = tuple(
+            int(foreground_hex[i : i + 2], 16)
+            for i in (0, 2, 4)
+        )
 
-
-    def render_action(self, title, href, args, icon):
-        return self.render_link(title, href, args, self.icon(icon), self.action_clss)
-
-
-    def render_link(self, title, href, args, text, clss=''):
-        href = 'subl:' + sublime.html_format_command(href, args)
-        clss = f' class="{clss}"' if clss else ''
-        return f'<a href="{href}"{clss} title="{title}">{text}</a>'
-
-
-    def get_color_scheme(self, foreground_hex):
-        foreground_hex = foreground_hex.lstrip('#')
-        foreground_rgb = tuple(int(foreground_hex[i:i+2], 16) for i in (0, 2, 4))
-        return 'dark' if foreground_rgb > (127, 127, 127) else 'light'
+        return "dark" if rgb > (127, 127, 127) else "light"
