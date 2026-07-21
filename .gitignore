@@ -1,3 +1,4 @@
+.dev/cache
 /package-metadata.json
 *.pyc
 *.sublime-project
