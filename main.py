@@ -12,8 +12,11 @@ import sublime_plugin
 
 from .core.renderer import Renderer
 from .core.shelf import CommonShelf, ProjectShelf
+from .core.version import sublimetext_build_min
 
-#from Shelf.core.debug import _d
+if int(sublime.version()) < sublimetext_build_min:
+    msg = f"Shelf only works with Sublime Text build {sublimetext_build_min!s} or later."
+    raise RuntimeError(msg)
 
 
 def get_shelf(name: str) -> CommonShelf | ProjectShelf:
