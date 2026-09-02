@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: UTF-8 -*-
-#
 # File name: main.py
 # Created:   2024-03-11 09:24
 # @author    Gabriel Tenita <dev2023@tenita.eu>
