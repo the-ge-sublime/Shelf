@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-#
 # File name: version.py
 # Created:   2024-03-31 12:52
 # @author    Gabriel Tenita <dev2023@tenita.eu>
