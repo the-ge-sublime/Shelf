@@ -6,9 +6,13 @@
 # @license   https://www.apache.org/licenses/LICENSE-2.0 Apache License version 2.0
 
 import csv
+import logging
 import os
 
 import sublime
+
+logging.basicConfig(level='DEBUG', format='%(levelname)s: %(message)s')  # DEBUG INFO WARNING ERROR CRITICAL
+logger = logging.getLogger(__name__)
 
 
 class Shelf:
@@ -34,7 +38,7 @@ class Shelf:
 
     def write(self, items):
         if not self.has_file():
-            print(f"Creating {self.file}...")
+            logger.info('Creating %s...', self.file)
 
         with open(self.file, "w", encoding="utf_8", newline="") as f:
             csv.writer(f).writerows(items)
@@ -44,13 +48,12 @@ class Shelf:
         items = self.read()
 
         if item in items:
-            print(f"Item already on the {self.key} shelf.")
+            logger.info('Item already on the %s shelf.', self.key)
             return
 
         items.append(item)
         self.write(items)
-
-        print(f"Added {item[0]} to the {self.key} shelf.")
+        logger.info('Added %s to the %s shelf.', item[0], self.key)
 
     def move_up(self, item):
         items = self.read()
@@ -89,8 +92,7 @@ class Shelf:
             return
 
         self.write(items)
-
-        print(f"Removed {item[0]} from the {self.key} shelf.")
+        logger.info('Removed %s from the %s shelf.', item[0], self.key)
 
 
 class CommonShelf(Shelf):
