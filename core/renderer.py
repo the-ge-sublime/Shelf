@@ -7,34 +7,32 @@
 #
 # See also https://www.sublimetext.com/docs/minihtml.html.
 
+from __future__ import annotations
+
 import math
-import os
+from pathlib import Path
 
 import sublime
-
 from Shelf.core.shelf import CommonShelf, ProjectShelf
 
 
 class Renderer:
     RAW_SRC = "Packages/Shelf/assets"
-
     ACTION_CLASS = "btn action-btn"
     DISABLED_CLASS = "btn disabled-btn"
 
-    def render_shelves(self, foreground_hex):
-        color_scheme = self.get_color_scheme(foreground_hex)
+    def __init__(self, foreground_hex: str) -> None:
+        self.color_scheme = self.get_color_scheme(foreground_hex)
 
-        _, common_html, common_width = self.render_shelf(
-            CommonShelf(), color_scheme
-        )
+    def render_shelves(self) -> str:
+
+        common_html, common_width = self.render_shelf(CommonShelf())
 
         project_html = ""
         title_width = common_width
 
         if sublime.active_window().project_file_name():
-            _, project_html, project_width = self.render_shelf(
-                ProjectShelf(), color_scheme
-            )
+            project_html, project_width = self.render_shelf(ProjectShelf())
             title_width = max(title_width, project_width)
 
         title_rems = math.ceil(title_width) * 0.75
@@ -60,7 +58,7 @@ html {{
 
     <div class="close">
         <a href="#" class="close-btn btn">
-            {self.icon("close", color_scheme)}
+            {self.icon('close')}
         </a>
     </div>
 
@@ -70,8 +68,8 @@ html {{
 </body>
 """
 
-    def render_shelf(self, shelf, color_scheme):
-        items = shelf.read()
+    def render_shelf(self, shelf: CommonShelf | ProjectShelf) -> tuple[str, str, str]:
+        items = shelf.read_inventory()
         shelf_title_suffix = '&nbsp;' * (8 - len(shelf.key))
         rendered = f"""
     <div class="table">
@@ -80,8 +78,8 @@ html {{
             {shelf.key.upper()}{shelf_title_suffix}
             <div class="actions">
                 {self.render_open_file_action(
-                    shelf.file,
-                    self.icon("edit", color_scheme),
+                    shelf.file.as_posix(),
+                    self.icon("edit"),
                     "title no-underline",
                 )}
             </div>
@@ -93,18 +91,13 @@ html {{
 
             rendered += f"""
         <div class="row {row_class}">
-            {self.render_open_file_action(
-                path,
-                name,
-                "title no-underline",
-            )}
+            {self.render_open_file_action(path, name, "title no-underline")}
             <div class="actions">
                 {self.side_actions(
-                    (name, path),
                     shelf.key,
+                    (name, path),
                     index,
                     len(items),
-                    color_scheme,
                 )}
             </div>
         </div>
@@ -116,59 +109,35 @@ html {{
     </div>
 """
 
-        return shelf.file, rendered, max_len
+        return rendered, max_len
 
     def side_actions(
         self,
-        item,
-        shelf,
-        index,
-        count,
-        color_scheme,
-    ):
+        shelf: CommonShelf | ProjectShelf,
+        item: list,
+        index: int,
+        count: int,
+    ) -> str:
         args = {
-            "item": item,
             "shelf": shelf,
+            "item": item,
         }
-
-        path = os.path.dirname(item[1])
+        path = Path(item[1]).parent.as_posix()
 
         return (
-            self.render_action(
-                f"Edit {path}",
-                "open_dir",
-                {"dir": path},
-                "folder",
-                color_scheme,
-            )
-            + self.render_move_action(
-                "up",
-                args,
-                index > 0,
-                color_scheme,
-            )
-            + self.render_move_action(
-                "down",
-                args,
-                index < count - 1,
-                color_scheme,
-            )
-            + self.render_action(
-                "Remove",
-                "shelf_item_remove",
-                args,
-                "trash",
-                color_scheme,
-            )
+            self.render_action(f"Edit {path}", "open_dir", {"dir": path}, "folder")
+            + self.render_move_action("up", args, index, count)
+            + self.render_move_action("down", args, index, count)
+            + self.render_action("Remove", "shelf_item_remove", args, "trash")
         )
 
-    def icon(self, name, color_scheme):
+    def icon(self, name: str) -> str:
         return (
             f'<img class="btn-icon" '
-            f'src="res://{self.RAW_SRC}/img/{name}-{color_scheme}.png">'
+            f'src="res://{self.RAW_SRC}/img/{name}-{self.color_scheme}.png">'
         )
 
-    def render_open_file_action(self, path, text, css_class):
+    def render_open_file_action(self, path: str, text: str, css_class: str) -> str:
         return self.render_link(
             f"Edit {path}",
             "open_file",
@@ -182,39 +151,47 @@ html {{
 
     def render_move_action(
         self,
-        direction,
-        args,
-        enabled,
-        color_scheme,
-    ):
+        direction: str,
+        args: dict[str, str],
+        index: int,
+        count: int,
+    ) -> str:
+        enabled = {
+            'up': index > 0,
+            'down': index < count - 1,
+        }
+
         return self.render_link(
-            f"Move {direction}" if enabled else "",
-            f"shelf_item_move_{direction}" if enabled else "",
+            f"Move {direction}",
+            f"shelf_item_move_{direction}",
             args,
-            self.icon(f"arrow-{direction}", color_scheme)
-            if enabled
-            else "&nbsp;",
-            self.ACTION_CLASS if enabled else self.DISABLED_CLASS,
-        )
+            self.icon(f"arrow-{direction}"),
+            self.ACTION_CLASS,
+        ) if enabled[direction] else self.render_link("", "", args, "&nbsp;", self.DISABLED_CLASS)
 
     def render_action(
         self,
-        title,
-        command,
-        args,
-        icon,
-        color_scheme,
-    ):
+        title: str,
+        command: str,
+        args: dict[str, str],
+        icon: str,
+    ) -> str:
         return self.render_link(
             title,
             command,
             args,
-            self.icon(icon, color_scheme),
+            self.icon(icon),
             self.ACTION_CLASS,
         )
 
     @staticmethod
-    def render_link(title, command, args, text, css_class=""):
+    def render_link(
+        title: str,
+        command: str,
+        args: dict[str, str],
+        text: str,
+        css_class: str = "",
+    ) -> str:
         href = "subl:" + sublime.html_format_command(command, args)
         css = f' class="{css_class}"' if css_class else ""
 
@@ -224,7 +201,7 @@ html {{
         )
 
     @staticmethod
-    def get_color_scheme(foreground_hex):
+    def get_color_scheme(foreground_hex: str) -> str:
         foreground_hex = foreground_hex.lstrip("#")
         rgb = tuple(
             int(foreground_hex[i : i + 2], 16)

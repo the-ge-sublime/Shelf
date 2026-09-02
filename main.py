@@ -37,7 +37,7 @@ class ShelfCommand(sublime_plugin.WindowCommand):
 
     def render(self) -> str:
         view = self.window.active_view()
-        return Renderer().render_shelves(view.style()["foreground"])
+        return Renderer(view.style()["foreground"]).render_shelves()
 
     def refresh_popup(self) -> None:
         self.window.active_view().update_popup(self.render())

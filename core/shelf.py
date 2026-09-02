@@ -5,9 +5,11 @@
 # @copyright Copyright (c) 2026-present Gabriel Tenita
 # @license   https://www.apache.org/licenses/LICENSE-2.0 Apache License version 2.0
 
+from __future__ import annotations
+
 import csv
 import logging
-import os
+from pathlib import Path
 
 import sublime
 
@@ -18,34 +20,34 @@ logger = logging.getLogger(__name__)
 class Shelf:
     key = None
 
-    def __init__(self, file):
+    def __init__(self, file: Path) -> None:
         self.file = file
 
-    def clear(self):
+    def clear(self) -> None:
         if self.file:
-            with open(self.file, "w", encoding="utf_8"):
+            with self.file.open("w", encoding="utf_8"):
                 pass
 
-    def has_file(self):
-        return self.file is not None and os.path.exists(self.file)
+    def has_file(self) -> str:
+        return self.file.exists()
 
-    def read(self):
+    def read_inventory(self) -> list[tuple]:
         if not self.has_file():
             return []
 
-        with open(self.file, "r", encoding="utf_8", newline="") as f:
+        with self.file.open(encoding="utf_8", newline="") as f:
             return [tuple(row) for row in csv.reader(f)]
 
-    def write(self, items):
+    def write(self, items: list) -> None:
         if not self.has_file():
             logger.info('Creating %s...', self.file)
 
-        with open(self.file, "w", encoding="utf_8", newline="") as f:
+        with self.file.open("w", encoding="utf_8", newline="") as f:
             csv.writer(f).writerows(items)
 
-    def add(self, path):
-        item = (os.path.basename(path), path)
-        items = self.read()
+    def add(self, path: str) -> None:
+        item = (Path(path).name, path)
+        items = self.read_inventory()
 
         if item in items:
             logger.info('Item already on the %s shelf.', self.key)
@@ -55,8 +57,8 @@ class Shelf:
         self.write(items)
         logger.info('Added %s to the %s shelf.', item[0], self.key)
 
-    def move_up(self, item):
-        items = self.read()
+    def move_up(self, item: tuple[str, str]) -> None:
+        items = self.read_inventory()
 
         try:
             index = items.index(item)
@@ -69,8 +71,8 @@ class Shelf:
         items[index - 1], items[index] = items[index], items[index - 1]
         self.write(items)
 
-    def move_down(self, item):
-        items = self.read()
+    def move_down(self, item: tuple[str, str]) -> None:
+        items = self.read_inventory()
 
         try:
             index = items.index(item)
@@ -83,8 +85,8 @@ class Shelf:
         items[index], items[index + 1] = items[index + 1], items[index]
         self.write(items)
 
-    def remove(self, item):
-        items = self.read()
+    def remove(self, item: tuple[str, str]) -> None:
+        items = self.read_inventory()
 
         try:
             items.remove(item)
@@ -98,20 +100,14 @@ class Shelf:
 class CommonShelf(Shelf):
     key = "common"
 
-    def __init__(self):
-        super().__init__(
-            os.path.join(
-                sublime.packages_path(),
-                "User",
-                "shelf-common.csv",
-            )
-        )
+    def __init__(self) -> None:
+        super().__init__(Path(sublime.packages_path()) / 'User' / 'Default.shelf')
 
 
 class ProjectShelf(Shelf):
     key = "project"
 
-    def __init__(self):
-        project = sublime.active_window().project_file_name()
-        if project:
-            super().__init__(f"{project}.shelf")
+    def __init__(self) -> None:
+        project_filename = Path(sublime.active_window().project_file_name())
+        shelf_filename = project_filename.with_suffix('.shelf')
+        super().__init__(shelf_filename)
