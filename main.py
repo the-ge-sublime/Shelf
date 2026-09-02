@@ -55,7 +55,6 @@ class ShelfViewCommand(ShelfCommand):
             on_navigate=self.on_navigate,
             max_width=width,
             max_height=height,
-            # flags=sublime.KEEP_ON_SELECTION_MODIFIED,
         )
 
     def on_navigate(self, href: str) -> None:
