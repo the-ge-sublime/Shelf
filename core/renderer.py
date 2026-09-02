@@ -1,5 +1,11 @@
-# -*- coding: UTF-8 -*-
-# https://www.sublimetext.com/docs/minihtml.html
+# File name: renderer.py
+# Created:   2024-03-11 09:24
+# @author    Gabriel Tenita <g1704578400@tenita.eu@tenita.eu>
+# @see       https://github.com/the-ge/
+# @copyright Copyright (c) 2026-present Gabriel Tenita
+# @license   https://www.apache.org/licenses/LICENSE-2.0 Apache License version 2.0
+#
+# See also https://www.sublimetext.com/docs/minihtml.html.
 
 import math
 import os
