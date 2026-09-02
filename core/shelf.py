@@ -5,8 +5,6 @@ import os
 
 import sublime
 
-# from Shelf.core.debug import _d
-
 
 class Shelf:
     key = None
