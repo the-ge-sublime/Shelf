@@ -42,6 +42,18 @@ The available commands are (see also the `Default.sublime-commands` file):
 * Add the current file to the project shelf: `{ "command": "shelf_add", "args": {"shelf": "project"} }`;
 * Add the current file to the common shelf: `{ "command": "shelf_add", "args": {"shelf": "common"} }`;
 
+## TOFIX
+
+- [ ] Set a min-width.
+- [ ] Detect when file is already opened and alert.
+
 ## TODO
 
-* Add a way to put directories on the shelves (need to think UI).
+- [x] Add a way to put directories on the shelves (need to think UI).
+- [ ] convert PNGs to data URIs and change their color with Python
+- [ ] tab context menu
+- [ ] headers buttons
+    - [x] open the shelf files
+    - [ ] ~~delete the shelf files~~
+- [ ] ~~hide header when no shelf file~~
+- [ ] hover? (sublime_plugin.EventListener.in_hover)

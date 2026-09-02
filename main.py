@@ -7,18 +7,6 @@
 # @link      https://github.com/the-ge/
 # @copyright Copyright (c) 2024-present Gabriel Tenita
 # @license   https://www.apache.org/licenses/LICENSE-2.0 Apache License version 2.0
-#
-# [TODO]
-# - convert PNGs to data URIs and change their color with Python
-# - tab context menu
-# - headers buttons
-#   - open the shelf files
-#   - delete the shelf files
-# - hide header when no shelf file
-# - hover? (sublime_plugin.EventListener.in_hover)
-# [FIX]
-# - set a min-width
-# - detect when file is already opened and alert
 
 import sublime_plugin
 
