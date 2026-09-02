@@ -1,0 +1,26 @@
+[project]
+name = "Shelf"
+version = "1.0.3"
+description = "Sublime Text 4 plugin for storing - per project or globally - frequenly used files"
+requires-python = ">=3.8"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {}
+py-modules = []
+
+[tool.setuptools.packages.find]
+where = []
+include = []
+namespaces = true
+
+[tool.distutils.egg_info]
+egg_base = ".dev/tmp"
+
+[tool.ruff]
+extend = "$PYPROJECT_DEFAULT_CFG"
+cache-dir = ".dev/tmp/ruff"
+
