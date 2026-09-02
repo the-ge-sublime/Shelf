@@ -28,7 +28,8 @@ def get_shelf(name: str) -> CommonShelf | ProjectShelf:
     try:
         return shelves[name]()
     except KeyError:
-        raise ValueError(f"Unknown shelf: {name}") from None
+        msg = f"Unknown shelf: {name}"
+        raise ValueError(msg) from None
 
 
 class ShelfCommand(sublime_plugin.WindowCommand):
