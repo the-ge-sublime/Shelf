@@ -57,8 +57,8 @@ class ShelfViewCommand(ShelfCommand):
             content=content,
             location=location,
             on_navigate=self.on_navigate,
-            max_width=width,
-            max_height=height,
+            max_width=int(width),
+            max_height=int(height),
         )
 
     def on_navigate(self, href: str) -> None:
