@@ -125,7 +125,7 @@ html {{
         path = Path(item[1]).parent.as_posix()
 
         return (
-            self.render_action(f"Edit {path}", "open_dir", {"dir": path}, "folder")
+            self.render_action(f"Open {path}", "open_dir", {"dir": path}, "folder")
             + self.render_move_action("up", args, index, count)
             + self.render_move_action("down", args, index, count)
             + self.render_action("Remove", "shelf_item_remove", args, "trash")
